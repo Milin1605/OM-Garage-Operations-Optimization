@@ -1,0 +1,728 @@
+
+<style>
+
+:root{
+  --font-sans: Arial, Helvetica, sans-serif;
+  --border-radius-md: 8px; --border-radius-lg: 12px;
+  --color-background-primary:#ffffff; --color-background-secondary:#f5f6f8;
+  --color-background-tertiary:#eceff2; --color-background-success:#e8f5ee;
+  --color-background-warning:#fff4df; --color-background-danger:#fdebea;
+  --color-background-info:#eaf2fb;
+  --color-border-secondary:#cbd2d9; --color-border-tertiary:#e0e4e8;
+  --color-border-success:#9bcdb0; --color-border-danger:#e7aaa7;
+  --color-border-info:#a9c5e3;
+  --color-text-primary:#20262e; --color-text-secondary:#59636e;
+  --color-text-tertiary:#7b858f; --color-text-success:#176b3a;
+  --color-text-warning:#8a5b00; --color-text-danger:#a52a25;
+  --color-text-info:#245f9e;
+}
+@media(prefers-color-scheme:dark){
+ :root{
+  --color-background-primary:#171a1f; --color-background-secondary:#22272e;
+  --color-background-tertiary:#2b323b; --color-background-success:#173b29;
+  --color-background-warning:#44351b; --color-background-danger:#482321;
+  --color-background-info:#1c344d; --color-border-secondary:#4a535e;
+  --color-border-tertiary:#38414b; --color-border-success:#326b49;
+  --color-border-danger:#87413c; --color-border-info:#345d84;
+  --color-text-primary:#edf1f5; --color-text-secondary:#b5bec8;
+  --color-text-tertiary:#8d98a4; --color-text-success:#8ed0a6;
+  --color-text-warning:#f0c36b; --color-text-danger:#f29a94;
+  --color-text-info:#91bce8;
+ }
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+#R{padding:1rem 0;font-family:var(--font-sans)}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:8px;margin-bottom:12px}
+.cc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 13px}
+.cl{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;display:flex;justify-content:space-between}
+.cv{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+input[type=range]{width:100%;margin-top:3px}
+.cr{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.cb{padding:4px 9px;font-size:11px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:transparent;color:var(--color-text-secondary)}
+.cb.on{background:var(--color-background-success);border-color:var(--color-border-success);color:var(--color-text-success);font-weight:500}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.tab{padding:5px 14px;font-size:12px;border:0.5px solid transparent;border-radius:var(--border-radius-md);cursor:pointer;color:var(--color-text-secondary);background:transparent}
+.tab.on{background:var(--color-background-primary);border-color:var(--color-border-secondary);color:var(--color-text-primary);font-weight:500}
+.pn{display:none}.pn.on{display:block}
+.mg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px 12px}
+.ml{font-size:10px;color:var(--color-text-secondary);margin-bottom:2px}
+.mv{font-size:17px;font-weight:500;color:var(--color-text-primary);line-height:1.2}
+.ms{font-size:10px;color:var(--color-text-tertiary);margin-top:1px}
+.mc.g .mv{color:var(--color-text-success)}.mc.w .mv{color:var(--color-text-warning)}.mc.b .mv{color:var(--color-text-danger)}
+.mc.bn{border:0.5px solid var(--color-border-danger)}
+.bn-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.bn-card{border-radius:var(--border-radius-md);padding:10px 13px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);position:relative}
+.bn-card.active{border-color:var(--color-border-danger);background:var(--color-background-danger)}
+.bn-card.active .bn-title{color:var(--color-text-danger)}
+.bn-title{font-size:11px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.bn-val{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.bn-sub{font-size:10px;color:var(--color-text-secondary);margin-top:2px;line-height:1.5}
+.bn-badge{position:absolute;top:8px;right:10px;font-size:9px;font-weight:500;padding:2px 6px;border-radius:3px;background:var(--color-background-danger);color:var(--color-text-danger)}
+.bn-badge.ok{background:var(--color-background-success);color:var(--color-text-success)}
+.force-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px}
+.force-bar{flex:1;height:20px;background:var(--color-background-tertiary);border-radius:4px;overflow:hidden}
+.force-fill{height:100%;border-radius:4px;transition:width .35s;display:flex;align-items:center;padding-left:7px;font-size:10px;font-weight:500;color:#fff}
+.force-label{width:110px;flex-shrink:0;font-size:11px;color:var(--color-text-secondary)}
+.force-pct{width:38px;text-align:right;font-size:11px;color:var(--color-text-secondary);flex-shrink:0}
+canvas{display:block;background:transparent}
+.cw{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-secondary)}
+.sr{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.sl{width:88px;font-size:11px;color:var(--color-text-secondary);flex-shrink:0}
+.st{flex:1;height:26px;background:var(--color-background-tertiary);border-radius:4px;display:flex;overflow:hidden}
+.ss{height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#fff}
+.pr{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.pn2{width:128px;font-size:11px;color:var(--color-text-secondary);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pt{flex:1;height:18px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden;min-width:40px}
+.pf{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:500;color:#fff;white-space:nowrap}
+.pp{font-size:10px;color:var(--color-text-tertiary);width:42px;text-align:right;flex-shrink:0}
+.tw{overflow-x:auto;margin-top:8px;max-height:380px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{padding:6px 8px;background:var(--color-background-secondary);color:var(--color-text-secondary);font-weight:500;border-bottom:0.5px solid var(--color-border-secondary);text-align:left;position:sticky;top:0;z-index:1}
+td{padding:5px 8px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.bg2{display:inline-block;padding:2px 5px;border-radius:3px;font-size:10px;font-weight:500}
+.gg{background:var(--color-background-success);color:var(--color-text-success)}
+.gw{background:var(--color-background-warning);color:var(--color-text-warning)}
+.gr{background:var(--color-background-danger);color:var(--color-text-danger)}
+.sh{font-size:12px;font-weight:500;color:var(--color-text-primary);margin:10px 0 6px}
+.ib{font-size:11px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 11px;margin-top:10px;border-left:2px solid var(--color-border-info);line-height:1.65}
+.lg{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.li{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--color-text-secondary)}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.def-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.def-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 13px;border:0.5px solid var(--color-border-tertiary)}
+.def-box.ct-box{border-left:3px solid #E24B4A}
+.def-box.ft-box{border-left:3px solid #3B8BD4}
+.def-title{font-size:11px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.def-body{font-size:11px;color:var(--color-text-secondary);line-height:1.55}
+/* Fix callout banner */
+.fix-banner{background:var(--color-background-success);border-radius:var(--border-radius-md);padding:8px 12px;margin-bottom:12px;border:0.5px solid var(--color-border-success);font-size:11px;color:var(--color-text-success);line-height:1.6}
+</style>
+
+<div id="R">
+<!-- FIX BANNER -->
+<div class="fix-banner">
+  <b>Model update:</b> Dry Bay slots are activated only when at least one worker can be assigned to each slot.
+  Example: 3 cars + 1 worker → 1 active Dry Bay slot, 1 worker/slot; 3 cars + 4 workers → 2 active slots, 2 workers/slot.
+  This avoids a zero-worker division error. It remains a simplified staffing model, not a validated shift-level schedule.
+</div>
+
+<!-- CONTROLS -->
+<div class="cg">
+  <div class="cc">
+    <div class="cl"><span>Cars arriving simultaneously</span><span class="cv" id="vc">3</span></div>
+    <input type="range" min="1" max="5" step="1" value="3" oninput="S.cars=+this.value;document.getElementById('vc').textContent=this.value;go()">
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--color-text-tertiary);margin-top:2px"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+  <div class="cc">
+    <div class="cl"><span>Permanent workers/shift</span><span class="cv" id="vp">2</span></div>
+    <input type="range" min="1" max="6" step="1" value="2" oninput="S.perm=+this.value;document.getElementById('vp').textContent=this.value;go()">
+    <div style="font-size:9px;color:var(--color-text-tertiary);margin-top:2px">Owner + permanent · ₹66.66/hr each</div>
+  </div>
+  <div class="cc">
+    <div class="cl"><span>Temporary workers/shift</span><span class="cv" id="vt">2</span></div>
+    <input type="range" min="0" max="6" step="1" value="2" oninput="S.temp=+this.value;document.getElementById('vt').textContent=this.value;go()">
+    <div style="font-size:9px;color:var(--color-text-tertiary);margin-top:2px">₹322/hr each</div>
+  </div>
+  <div class="cc">
+    <div class="cl"><span>Coating layers → Revenue</span></div>
+    <div class="cr">
+      <button class="cb on" onclick="sc(1,this)">1 layer · ₹30k</button>
+      <button class="cb" onclick="sc(2,this)">2 layers · ₹40k</button>
+      <button class="cb" onclick="sc(3,this)">3 layers · ₹50k</button>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab on" onclick="st('ct',this)">Cycle Time</button>
+  <button class="tab" onclick="st('floor',this)">Floor Plan</button>
+  <button class="tab" onclick="st('shift',this)">Shift &amp; Throughput</button>
+  <button class="tab" onclick="st('proc',this)">Process Flow</button>
+  <button class="tab" onclick="st('scen',this)">Scenario Table</button>
+</div>
+
+<!-- METRICS -->
+<div class="mg" id="MG"></div>
+
+<!-- CYCLE TIME TAB -->
+<div id="tab-ct" class="pn on">
+  <div class="def-row">
+    <div class="def-box ct-box">
+      <div class="def-title">Cycle Time (CT) — bottleneck rate</div>
+      <div class="def-body"><b>CT = max(Wet Bay CT, Dry Bay CT, Extra Bay CT)</b><br>
+      Dry Bay CT = (station time per car) ÷ slots.<br>
+      Workers/slot = floor(totalW ÷ active slots). Max benefit = 2W/slot.</div>
+    </div>
+    <div class="def-box ft-box">
+      <div class="def-title">Why the old formula was wrong</div>
+      <div class="def-body">Old: <code>wpc = totalW ≥ cars×2 ? 2 : 1</code><br>
+      For 4W, 3 cars: 4 ≥ 6 → <b>wpc=1</b> (wrong!)<br>
+      New: <code>wpc = min(2, floor(4 ÷ 2 slots)) = 2</code> ✓<br>
+      Dry Bay has 2 slots → 4W ÷ 2 slots = 2W each.</div>
+    </div>
+  </div>
+
+  <div class="sh">Bottleneck identification — station CT values</div>
+  <div class="bn-strip" id="BN"></div>
+  <div class="sh">Two competing forces on cycle time</div>
+  <div id="FORCES"></div>
+  <div class="sh">Cycle Time vs Workers (current cars + coating)</div>
+  <div class="cw" style="padding:14px 8px 8px"><canvas id="CTC" height="200"></canvas></div>
+  <div class="ib" id="CTI"></div>
+</div>
+
+<!-- FLOOR PLAN -->
+<div id="tab-floor" class="pn">
+  <div class="cw"><svg id="FS" viewBox="0 0 680 420" width="100%" style="display:block;height:auto"></svg></div>
+  <div class="lg">
+    <div class="li"><div class="ld" style="background:#888780"></div>Parking (5)</div>
+    <div class="li"><div class="ld" style="background:#3B8BD4"></div>Wet Bay (1) — fixed 110m</div>
+    <div class="li"><div class="ld" style="background:#1D9E75"></div>Extra Bay (1)</div>
+    <div class="li"><div class="ld" style="background:#BA7517"></div>Dry Bay (2 slots)</div>
+    <div class="li"><div class="ld" style="background:#D85A30"></div>Car</div>
+    <div class="li"><div class="ld" style="background:#D4537E;border-radius:50%"></div>Worker (wpc shown)</div>
+  </div>
+  <div class="ib" id="FI"></div>
+</div>
+
+<!-- SHIFT & THROUGHPUT -->
+<div id="tab-shift" class="pn">
+  <div class="sh">24/7 Shift Plan — 2 × 12-hr shifts per day</div>
+  <div id="SB"></div>
+  <div class="sh" style="margin-top:14px">Throughput Analysis — Cars per 12-hr Shift</div>
+  <div class="cw" style="padding:14px 8px 8px"><canvas id="TC" height="200"></canvas></div>
+  <div class="ib" id="SI"></div>
+</div>
+
+<!-- PROCESS FLOW -->
+<div id="tab-proc" class="pn"><div id="PC"></div></div>
+
+<!-- SCENARIO TABLE -->
+<div id="tab-scen" class="pn">
+  <div class="sh">All Scenarios — Cars × Workers × Coating</div>
+  <div class="tw"><table>
+    <thead><tr>
+      <th>Cars</th><th>Perm</th><th>Temp</th><th>W/Slot</th>
+      <th style="color:var(--color-text-danger)">CT(m)</th>
+      <th style="color:var(--color-text-info)">FT(m)</th>
+      <th>Bottleneck</th>
+      <th>/Shift</th><th>/Day</th>
+      <th>Labour/Car</th><th>Revenue</th><th>Indicative surplus/Car</th><th>Status</th>
+    </tr></thead>
+    <tbody id="STB"></tbody>
+  </table></div>
+  <div class="ib" id="SNI"></div>
+  <div class="ib">Financial interpretation: “Indicative surplus” = revenue less a modelled 15% revenue allowance and estimated labour cost per car. The 15% allowance is an assumption, not a sourced expense rate. Rent, utilities, materials, taxes, maintenance, marketing, downtime and other overheads are not fully modelled. Do not interpret this as audited net profit.</div>
+</div>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────
+const S={cars:3,perm:2,temp:2,coat:1};
+const REV={1:30000,2:40000,3:50000};
+const SH=12, PR=66.66, TR=322, REVENUE_ALLOWANCE_RATE=0.15;
+let atab='ct';
+
+const PROCS=[
+  {g:'A',n:'Car Parking',          t:5,  v:false,zone:'pk'},
+  {g:'A',n:'Complementary Check',  t:5,  v:false,zone:'wt'},
+  {g:'A',n:'Paint Inspection',     t:5,  v:false,zone:'wt'},
+  {g:'A',n:'Discussion',           t:15, v:false,zone:'wt'},
+  {g:'B',n:'Below Wash',           t:20, v:false,zone:'wt'},
+  {g:'B',n:'Engine Wash',          t:15, v:false,zone:'wt'},
+  {g:'B',n:'Above Wash',           t:25, v:false,zone:'wt'},
+  {g:'C',n:'Sanding',              t:60, v:true, zone:'dr'},
+  {g:'C',n:'Compounding Polish',   t:180,v:true, zone:'dr'},
+  {g:'C',n:'Car Wash (after)',     t:15, v:false,zone:'wt'},
+  {g:'C',n:'IPA',                  t:10, v:false,zone:'wt'},
+  {g:'D',n:'Ceramic Coating',      t:90, v:true, zone:'dr',coat:true},
+  {g:'D',n:'Lamp Dry Time',        t:20, v:false,zone:'dr'},
+  {g:'D',n:'Add. Coatings',        t:10, v:false,zone:'dr'},
+  {g:'E',n:'Interior Cleaning',    t:120,v:true, zone:'ex'},
+  {g:'E',n:'Leather/Plastic Coat', t:30, v:true, zone:'dr'},
+  {g:'E',n:'Inspection',           t:10, v:false,zone:'dr'},
+];
+
+// ── WORKER ALLOCATION ─────────────────────────
+// A Dry Bay slot is activated only when at least one worker can be assigned.
+// This prevents zero workers/slot when total workers < potential slots.
+// Assumption: each active slot receives an equal whole-number allocation,
+// capped at two workers per slot.
+function activeDrySlots(p,t,nc){
+  return Math.min(nc, 2, p+t);
+}
+function wpc(p,t,nc){
+  const slots = activeDrySlots(p,t,nc);
+  if (slots <= 0) return 0;
+  return Math.min(2, Math.floor((p+t)/slots));
+}
+
+function stationTimes(p,t,coat,nc){
+  const w = wpc(p,t,nc);
+  const wet   = PROCS.filter(x=>x.zone==='wt').reduce((s,x)=>s+x.t,0); // 110 fixed
+  const dry   = PROCS.filter(x=>x.zone==='dr').reduce((s,x)=>{
+    const b = x.coat ? x.t*coat : x.t;
+    return s+(x.v ? Math.ceil(b/w) : b);
+  },0);
+  const extra = PROCS.filter(x=>x.zone==='ex').reduce((s,x)=>
+    s+(x.v ? Math.ceil(x.t/w) : x.t), 0);
+  return {wet, dry, extra, w};
+}
+
+function calcCT(p,t,coat,nc){
+  const {wet,dry,extra,w} = stationTimes(p,t,coat,nc);
+  const drySlots  = activeDrySlots(p,t,nc);
+  const extraSlots= Math.min(nc,1);
+  const ct_wet   = wet;
+  const ct_dry   = drySlots > 0 ? Math.round(dry / drySlots) : Infinity;
+  const ct_extra = Math.round(extra / extraSlots);
+  const ct = Math.max(ct_wet, ct_dry, ct_extra);
+  const bottleneck = ct_wet>=ct_dry && ct_wet>=ct_extra ? 'Wet Bay'
+                   : ct_dry>=ct_extra ? 'Dry Bay' : 'Extra Bay';
+  return {ct_wet, ct_dry, ct_extra, ct, bottleneck, wet, dry, extra, w};
+}
+
+function calcFT(p,t,coat,nc){
+  const {wet,dry,extra} = stationTimes(p,t,coat,nc);
+  const queueWait = nc > 1 ? (nc-1)*110 : 0;
+  return Math.round(5 + wet + dry + extra + queueWait);
+}
+
+function lshift(p,t){return p*PR*SH + t*TR*SH;}
+function cps(p,t,coat,nc){
+  const ct=calcCT(p,t,coat,nc).ct;
+  return Math.max(0, Math.floor(SH*60/ct));
+}
+function calc(){
+  const{cars:nc,perm:p,temp:t,coat}=S;
+  const ctObj=calcCT(p,t,coat,nc);
+  const ft=calcFT(p,t,coat,nc);
+  const cs=cps(p,t,coat,nc);
+  const ls=lshift(p,t);
+  const lcpc=cs>0?ls/cs:ls;
+  const rev=REV[coat];
+  const contribution=rev*(1-REVENUE_ALLOWANCE_RATE)-lcpc;
+  return{...ctObj,ft,cs,cpd:cs*2,ls,lcpc,rev,contribution,tw:p+t};
+}
+
+function sc(n,el){S.coat=n;document.querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));el.classList.add('on');go();}
+function st(id,el){
+  atab=id;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.pn').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('tab-'+id).classList.add('on');
+  if(id==='shift'||id==='ct') requestAnimationFrame(()=>{szC('TC');szC('CTC');go();});
+  else go();
+}
+function go(){
+  const d=calc();
+  rMG(d);
+  if(atab==='ct')    rCT(d);
+  else if(atab==='floor') rFL(d);
+  else if(atab==='shift') rSH(d);
+  else if(atab==='proc')  rPR(d);
+  else rSC(d);
+}
+function szC(id){
+  const cv=document.getElementById(id);if(!cv)return;
+  const w=cv.parentElement.clientWidth-16;if(w>50)cv.width=w;
+}
+
+// ── METRICS ──────────────────────────────────
+function rMG(d){
+  const pc=d.contribution>5000?'g':d.contribution>0?'w':'b';
+  document.getElementById('MG').innerHTML=`
+    <div class="mc bn"><div class="ml">Cycle Time (CT)</div><div class="mv" style="color:var(--color-text-danger)">${d.ct}m</div><div class="ms">${d.bottleneck} bottleneck · ${d.w}W/slot</div></div>
+    <div class="mc"><div class="ml">Flow Time (FT)</div><div class="mv" style="color:var(--color-text-info)">${d.ft}m</div><div class="ms">lead time per car</div></div>
+    <div class="mc"><div class="ml">Cars/Day (24hr)</div><div class="mv">${d.cpd}</div><div class="ms">${d.cs}/shift × 2</div></div>
+    <div class="mc"><div class="ml">Labour Cost/Car</div><div class="mv">₹${Math.round(d.lcpc).toLocaleString()}</div><div class="ms">₹${Math.round(d.ls).toLocaleString()}/shift</div></div>
+    <div class="mc ${pc}"><div class="ml">Indicative surplus/Car</div><div class="mv">₹${Math.round(d.contribution).toLocaleString()}</div><div class="ms">₹${Math.round(d.contribution*d.cpd).toLocaleString()}/day</div></div>`;
+}
+
+// ── CYCLE TIME TAB ────────────────────────────
+function rCT(d){
+  const cards=[
+    {id:'wt',label:'Wet Bay',  val:d.ct_wet,   cap:1,
+     sub:`Fixed 110m — wash steps\ncannot be sped up by workers.`},
+    {id:'dr',label:'Dry Bay',  val:d.ct_dry,   cap:activeDrySlots(S.perm,S.temp,S.cars),
+     sub:`${d.dry}m ÷ ${activeDrySlots(S.perm,S.temp,S.cars)} slot(s)\nwpc = min(2,⌊${d.tw}÷${activeDrySlots(S.perm,S.temp,S.cars)}⌋) = ${d.w}W/slot`},
+    {id:'ex',label:'Extra Bay',val:d.ct_extra,  cap:Math.min(S.cars,1),
+     sub:`${d.extra}m ÷ ${Math.min(S.cars,1)} slot\nInterior steps, ${d.w}W/slot`},
+  ];
+  document.getElementById('BN').innerHTML=cards.map(c=>{
+    const isBN=c.label===d.bottleneck;
+    return `<div class="bn-card ${isBN?'active':''}">
+      <span class="bn-badge ${isBN?'':'ok'}">${isBN?'BOTTLENECK':'OK'}</span>
+      <div class="bn-title">${c.label}</div>
+      <div class="bn-val" style="color:${isBN?'var(--color-text-danger)':'var(--color-text-primary)'}">${c.val} min</div>
+      <div class="bn-sub" style="white-space:pre-line">${c.sub}</div>
+    </div>`;
+  }).join('');
+
+  const labourPct = Math.round(Math.min(100, d.w===2 ? 55 : 15));
+  const congestPct= Math.round(Math.min(100, (S.cars-1)/4*100));
+  document.getElementById('FORCES').innerHTML=`
+    <div class="force-row">
+      <span class="force-label">Labour Power</span>
+      <div class="force-bar"><div class="force-fill" style="width:${Math.max(8,labourPct)}%;background:#1D9E75">${d.w}W/slot → speeds Dry+Extra</div></div>
+      <span class="force-pct">${labourPct}%</span>
+    </div>
+    <div class="force-row">
+      <span class="force-label">Wet Bay Congestion</span>
+      <div class="force-bar"><div class="force-fill" style="width:${Math.max(4,congestPct)}%;background:#E24B4A">cars queue · 110m floor</div></div>
+      <span class="force-pct">${congestPct}%</span>
+    </div>
+    <div class="ib" style="margin-top:8px">
+      <b>Formula:</b> Workers/slot = min(2, ⌊${d.tw}W ÷ ${activeDrySlots(S.perm,S.temp,S.cars)} active slots⌋) = <b>${d.w}</b>.
+      With ${d.w===2?'2W/slot, Dry Bay time halves':'1W/slot, Dry Bay runs at base speed'} →
+      Dry Bay CT = ${d.dry}m ÷ ${activeDrySlots(S.perm,S.temp,S.cars)} = <b>${d.ct_dry}m</b>.
+      System CT = max(${d.ct_wet}, ${d.ct_dry}, ${d.ct_extra}) = <b>${d.ct}m</b>
+      ${d.ct===110?' — Wet Bay is now the bottleneck (sweet spot reached!)':''}.
+    </div>`;
+  drawCTC();
+  document.getElementById('CTI').textContent=
+    `3 cars + 4 workers: wpc = min(2, ⌊4÷2⌋) = 2 → CT = 110m (Wet Bay floor) ✓  |  3 cars + 3 workers: wpc = min(2, ⌊3÷2⌋) = 1 → CT = Dry Bay bottleneck  |  Min achievable CT = 110m always`;
+}
+
+function drawCTC(){
+  const cv=document.getElementById('CTC');if(!cv)return;
+  szC('CTC');
+  const W=cv.width||560,H=cv.height;
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,W,H);
+  const dk=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const tc=dk?'rgba(255,255,255,0.68)':'rgba(0,0,0,0.65)';
+  const tc2=dk?'rgba(255,255,255,0.38)':'rgba(0,0,0,0.38)';
+  const gc=dk?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.055)';
+  const pL=50,pR=18,pT=20,pB=42;
+  const cW=W-pL-pR, cH=H-pT-pB;
+
+  const workers=Array.from({length:12},(_,i)=>i+1);
+  const totalW=S.perm+S.temp;
+  const ctVals=workers.map(w=>{
+    const p2=Math.min(w,6),t2=Math.max(0,w-6);
+    return calcCT(p2,t2,S.coat,S.cars).ct;
+  });
+  const ftVals=workers.map(w=>{
+    const p2=Math.min(w,6),t2=Math.max(0,w-6);
+    return calcFT(p2,t2,S.coat,S.cars);
+  });
+  const maxY=Math.max(...ftVals,250);
+
+  // Axes
+  ctx.strokeStyle=dk?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.14)';ctx.lineWidth=0.8;
+  ctx.beginPath();ctx.moveTo(pL,pT);ctx.lineTo(pL,pT+cH);ctx.lineTo(pL+cW,pT+cH);ctx.stroke();
+
+  // Y gridlines
+  for(let i=0;i<=4;i++){
+    const y=pT+cH*(1-i/4),v=Math.round(maxY*i/4);
+    ctx.strokeStyle=gc;ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(pL+cW,y);ctx.stroke();
+    ctx.fillStyle=tc2;ctx.font='10px var(--font-sans)';ctx.textAlign='right';
+    ctx.fillText(v+'m',pL-4,y+3);
+  }
+
+  // 110m floor dashed line
+  const yFloor=pT+cH*(1-110/maxY);
+  ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle='#E24B4A';ctx.lineWidth=1.3;
+  ctx.beginPath();ctx.moveTo(pL,yFloor);ctx.lineTo(pL+cW,yFloor);ctx.stroke();ctx.restore();
+  ctx.fillStyle='#E24B4A';ctx.font='bold 9px var(--font-sans)';ctx.textAlign='left';
+  ctx.fillText('Wet Bay floor = 110m',pL+5,yFloor-4);
+
+  // Draw lines
+  function drawLine(vals,col,dashed,lw){
+    ctx.save();if(dashed)ctx.setLineDash([4,3]);
+    ctx.strokeStyle=col;ctx.lineWidth=lw||1.8;ctx.lineJoin='round';ctx.beginPath();
+    vals.forEach((v,i)=>{
+      const x=pL+(i/(workers.length-1))*cW,y=pT+cH*(1-v/maxY);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });ctx.stroke();ctx.restore();
+  }
+  drawLine(ftVals,'#3B8BD4',true,1.4);
+  drawLine(ctVals,'#E24B4A',false,2.2);
+
+  // Highlight "sweet spot" — first worker count where CT hits 110
+  const sweetW = workers.findIndex(w=>ctVals[w-1]<=110);
+  if(sweetW>=0){
+    const sx=pL+(sweetW/(workers.length-1))*cW;
+    const sy=pT+cH*(1-110/maxY);
+    ctx.fillStyle='#1D9E75';
+    ctx.beginPath();ctx.arc(sx,sy,5.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#1D9E75';ctx.font='bold 9px var(--font-sans)';ctx.textAlign='center';
+    ctx.fillText('Sweet spot',sx,sy-9);
+  }
+
+  // Current worker dot
+  const ci=totalW-1;
+  if(ci>=0&&ci<workers.length){
+    const cx2=pL+(ci/(workers.length-1))*cW;
+    const ctY=pT+cH*(1-ctVals[ci]/maxY);
+    const ftY=pT+cH*(1-ftVals[ci]/maxY);
+    ctx.fillStyle='#E24B4A';ctx.beginPath();ctx.arc(cx2,ctY,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#3B8BD4';ctx.beginPath();ctx.arc(cx2,ftY,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=tc;ctx.font='bold 10px var(--font-sans)';ctx.textAlign='center';
+    ctx.fillText('CT='+ctVals[ci]+'m',cx2,ctY-10);
+  }
+
+  // X axis labels
+  workers.forEach((w,i)=>{
+    const x=pL+(i/(workers.length-1))*cW;
+    ctx.fillStyle=w===totalW?tc:tc2;
+    ctx.font=w===totalW?'bold 10px var(--font-sans)':'10px var(--font-sans)';
+    ctx.textAlign='center';ctx.fillText(w+'W',x,pT+cH+14);
+    if(w===totalW){
+      ctx.fillStyle=tc2;ctx.font='9px var(--font-sans)';
+      ctx.fillText('▲ current',x,pT+cH+26);
+    }
+  });
+
+  // Y axis rotate label
+  ctx.save();ctx.translate(14,pT+cH/2);ctx.rotate(-Math.PI/2);
+  ctx.fillStyle=tc2;ctx.font='10px var(--font-sans)';ctx.textAlign='center';
+  ctx.fillText('Minutes',0,0);ctx.restore();
+  ctx.fillStyle=tc2;ctx.font='10px var(--font-sans)';ctx.textAlign='center';
+  ctx.fillText('Total workers',pL+cW/2,H-4);
+
+  // Legend
+  [[' CT (cycle time)','#E24B4A',false],[' FT (flow time)','#3B8BD4',true],[' Sweet spot','#1D9E75',false]].forEach(([lbl,col,dash],i)=>{
+    const lx=pL+cW-330+i*110;
+    ctx.save();if(dash)ctx.setLineDash([4,3]);ctx.strokeStyle=col;ctx.lineWidth=1.8;
+    ctx.beginPath();ctx.moveTo(lx,pT+9);ctx.lineTo(lx+18,pT+9);ctx.stroke();ctx.restore();
+    ctx.fillStyle=tc2;ctx.font='9px var(--font-sans)';ctx.textAlign='left';
+    ctx.fillText(lbl,lx+22,pT+13);
+  });
+}
+
+// ── FLOOR PLAN ────────────────────────────────
+function rFL(d){
+  const dk=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const tc=dk?'rgba(255,255,255,0.78)':'rgba(0,0,0,0.72)';
+  const tc2=dk?'rgba(255,255,255,0.44)':'rgba(0,0,0,0.44)';
+  const gc=dk?'rgba(255,255,255,0.04)':'rgba(0,0,0,0.03)';
+  const ac=dk?'rgba(255,255,255,0.16)':'rgba(0,0,0,0.13)';
+  const n=S.cars;
+  const Z={
+    pk:{x:25,y:14,w:158,h:392,col:'#888780',lbl:'Parking',cap:5},
+    wt:{x:200,y:14,w:150,h:188,col:'#3B8BD4',lbl:'Wet Bay',cap:1},
+    ex:{x:200,y:218,w:150,h:188,col:'#1D9E75',lbl:'Extra Bay',cap:1},
+    dr:{x:368,y:14,w:196,h:392,col:'#BA7517',lbl:'Dry Bay',cap:2},
+  };
+  const NC={pk:Math.min(n,5),wt:Math.min(n,1),ex:Math.min(n,1),dr:Math.min(n,2)};
+  let o=`<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+    <path d="M1 2L8 5L1 8" fill="none" stroke="${ac}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker></defs>`;
+  for(let x=0;x<=680;x+=40)o+=`<line x1="${x}" y1="0" x2="${x}" y2="420" stroke="${gc}" stroke-width="0.8"/>`;
+  for(let y=0;y<=420;y+=40)o+=`<line x1="0" y1="${y}" x2="680" y2="${y}" stroke="${gc}" stroke-width="0.8"/>`;
+  o+=`<rect x="0" y="0" width="22" height="420" fill="${dk?'rgba(255,255,255,0.03)':'rgba(0,0,0,0.025)'}"/>`;
+  o+=`<text x="11" y="215" text-anchor="middle" font-size="9" font-family="var(--font-sans)" fill="${tc2}" transform="rotate(-90,11,215)">ENTRY →</text>`;
+  o+=`<rect x="577" y="0" width="103" height="420" fill="${dk?'rgba(255,255,255,0.03)':'rgba(0,0,0,0.025)'}"/>`;
+  o+=`<rect x="579" y="168" width="96" height="84" rx="6" fill="${dk?'rgba(216,90,48,0.18)':'rgba(216,90,48,0.1)'}" stroke="#D85A30" stroke-width="0.9"/>`;
+  o+=`<text x="627" y="206" text-anchor="middle" font-size="11" font-weight="bold" font-family="var(--font-sans)" fill="${tc}">EXIT</text>`;
+  [[183,108,200,108],[183,302,200,302],[350,105,368,105],[350,305,368,305],[564,210,579,210]].forEach(([x1,y1,x2,y2])=>{
+    o+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${ac}" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#ah)"/>`;
+  });
+  Object.entries(Z).forEach(([id,z])=>{
+    const cn=NC[id]||0, util=z.cap>0?cn/z.cap:0;
+    const isBN=(d.bottleneck==='Wet Bay'&&id==='wt')||(d.bottleneck==='Dry Bay'&&id==='dr')||(d.bottleneck==='Extra Bay'&&id==='ex');
+    const ctVal=id==='wt'?d.ct_wet:id==='dr'?d.ct_dry:id==='ex'?d.ct_extra:0;
+    o+=`<rect x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="10" fill="${z.col}" fill-opacity="${dk?.17:.08}" stroke="${isBN?'#E24B4A':z.col}" stroke-width="${isBN?2:.9}"/>`;
+    if(util>0){
+      o+=`<clipPath id="cpz${id}"><rect x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="10"/></clipPath>`;
+      o+=`<rect x="${z.x}" y="${z.y+z.h*(1-util)}" width="${z.w}" height="${z.h*util}" fill="${isBN?'#E24B4A':z.col}" fill-opacity="${dk?.2:.11}" clip-path="url(#cpz${id})"/>`;
+    }
+    o+=`<text x="${z.x+z.w/2}" y="${z.y+19}" text-anchor="middle" font-size="12" font-weight="bold" font-family="var(--font-sans)" fill="${tc}">${z.lbl}</text>`;
+    if(id!=='pk'){
+      o+=`<text x="${z.x+z.w/2}" y="${z.y+34}" text-anchor="middle" font-size="9.5" font-family="var(--font-sans)" fill="${isBN?'#E24B4A':tc2}">CT:${ctVal}m${isBN?' ← BN':''}</text>`;
+    }
+    if(cn>0&&id!=='pk')o+=`<text x="${z.x+z.w-10}" y="${z.y+19}" text-anchor="end" font-size="9" font-family="var(--font-sans)" fill="${z.col}" font-weight="bold">${cn}/${z.cap}</text>`;
+  });
+  const pkPos=[{cx:82,cy:90},{cx:148,cy:90},{cx:82,cy:190},{cx:148,cy:190},{cx:82,cy:290}];
+  pkPos.forEach((p,i)=>{
+    o+=`<rect x="${p.cx-28}" y="${p.cy-46}" width="56" height="92" rx="3" fill="none" stroke="${dk?'rgba(255,255,255,0.09)':'rgba(0,0,0,0.09)'}" stroke-width="0.8" stroke-dasharray="4,2"/>`;
+    o+=`<text x="${p.cx}" y="${p.cy+52}" text-anchor="middle" font-size="9" font-family="var(--font-sans)" fill="${tc2}">P${i+1}</text>`;
+    if(i<NC.pk)o+=mkCar(p.cx,p.cy,dk);
+  });
+  if(NC.wt>0){const cx=Z.wt.x+Z.wt.w/2,cy=Z.wt.y+Z.wt.h/2+10;o+=mkCar(cx,cy,dk)+mkW(cx,cy,1);}
+  if(NC.ex>0){const cx=Z.ex.x+Z.ex.w/2,cy=Z.ex.y+Z.ex.h/2+10;o+=mkCar(cx,cy,dk)+mkW(cx,cy,d.w);}
+  const drSlots=[{cx:Z.dr.x+Z.dr.w/2,cy:Z.dr.y+100},{cx:Z.dr.x+Z.dr.w/2,cy:Z.dr.y+295}];
+  for(let i=0;i<NC.dr;i++){
+    o+=`<rect x="${drSlots[i].cx-36}" y="${drSlots[i].cy-58}" width="72" height="116" rx="5" fill="none" stroke="${dk?'rgba(186,117,23,0.18)':'rgba(186,117,23,0.15)'}" stroke-width="0.8" stroke-dasharray="4,2"/>`;
+    o+=mkCar(drSlots[i].cx,drSlots[i].cy,dk)+mkW(drSlots[i].cx,drSlots[i].cy,d.w);
+    o+=`<text x="${drSlots[i].cx}" y="${drSlots[i].cy+44}" text-anchor="middle" font-size="9" font-family="var(--font-sans)" fill="${tc2}">${d.w}W · Sand·Polish·Coat</text>`;
+  }
+  o+=`<rect x="3" y="3" width="230" height="20" rx="4" fill="${dk?'rgba(0,0,0,0.45)':'rgba(255,255,255,0.9)'}" stroke="${dk?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.1)'}" stroke-width="0.5"/>`;
+  o+=`<text x="9" y="15" font-size="9.5" font-family="var(--font-sans)" fill="${tc2}">${S.perm}P+${S.temp}T · wpc=min(2,⌊${d.tw}÷${activeDrySlots(S.perm,S.temp,S.cars)}⌋)=${d.w} · CT:${d.ct}m</text>`;
+  if(n>9)o+=`<text x="8" y="413" font-size="10" font-weight="bold" font-family="var(--font-sans)" fill="#E24B4A">+${n-9} car(s) overflow</text>`;
+  document.getElementById('FS').innerHTML=o;
+
+  const msgs={
+    1:`1 car: 1 active Dry Bay slot. wpc = min(2,⌊${d.tw}÷1⌋) = ${d.w}. CT = max(110, ${d.ct_dry}, ${d.ct_extra}) = ${d.ct}m.`,
+    2:`2 cars: 2 Dry Bay slots active. wpc = min(2,⌊${d.tw}÷2⌋) = ${d.w}. CT = max(110, ${d.ct_dry}, ${d.ct_extra}) = ${d.ct}m.`,
+    3:`3 cars: 2 Dry Bay slots + 1 Extra slot. wpc = min(2,⌊${d.tw}÷2⌋) = ${d.w}. CT = max(110, ${d.ct_dry}, ${d.ct_extra}) = ${d.ct}m.`,
+    4:`4 cars: 2 Dry Bay slots at full load. wpc = min(2,⌊${d.tw}÷2⌋) = ${d.w}. CT = max(110, ${d.ct_dry}, ${d.ct_extra}) = ${d.ct}m.`,
+    5:`5 cars: Full floor. Parking holds overflow. wpc = min(2,⌊${d.tw}÷2⌋) = ${d.w}. CT = max(110, ${d.ct_dry}, ${d.ct_extra}) = ${d.ct}m.`,
+  };
+  document.getElementById('FI').textContent=msgs[n]||'';
+}
+function mkCar(cx,cy,dk){
+  const wc=dk?'#999':'#2a2a2a';
+  return `<rect x="${cx-26}" y="${cy-13}" width="52" height="26" rx="5" fill="#D85A30" stroke="rgba(255,255,255,0.3)" stroke-width="0.7"/>
+    <rect x="${cx-20}" y="${cy-12}" width="40" height="11" rx="2" fill="rgba(120,190,255,0.5)"/>
+    <circle cx="${cx-19}" cy="${cy+12}" r="4.5" fill="${wc}"/><circle cx="${cx+19}" cy="${cy+12}" r="4.5" fill="${wc}"/>
+    <circle cx="${cx-19}" cy="${cy-12}" r="4.5" fill="${wc}"/><circle cx="${cx+19}" cy="${cy-12}" r="4.5" fill="${wc}"/>
+    <circle cx="${cx-19}" cy="${cy+12}" r="2" fill="${dk?'#555':'#aaa'}"/><circle cx="${cx+19}" cy="${cy+12}" r="2" fill="${dk?'#555':'#aaa'}"/>`;
+}
+function mkW(cx,cy,n){
+  const angs=[-0.62,0.62,Math.PI-0.55,Math.PI+0.55];let o='';
+  for(let i=0;i<Math.min(n,4);i++){
+    const wx=cx+Math.cos(angs[i])*28,wy=cy+Math.sin(angs[i])*22;
+    o+=`<circle cx="${wx}" cy="${wy}" r="5.5" fill="#D4537E"/><circle cx="${wx}" cy="${wy-2.5}" r="2.2" fill="rgba(255,255,255,0.5)"/>`;
+  }return o;
+}
+
+// ── SHIFT & THROUGHPUT ────────────────────────
+function rSH(d){
+  const OC='#7F77DD',PC='#3B8BD4',TC='#D85A30';
+  const tot=S.perm+S.temp;
+  function mkBar(lbl){
+    const segs=[],op=Math.round(100/tot);segs.push({l:'O',p:op,c:OC});
+    if(S.perm>1)segs.push({l:(S.perm-1)+'P',p:Math.round((S.perm-1)/tot*100),c:PC});
+    if(S.temp>0)segs.push({l:S.temp+'T',p:Math.max(0,100-segs.reduce((a,x)=>a+x.p,0)),c:TC});
+    return `<div class="sr"><span class="sl">${lbl}</span><div class="st">${segs.map(s=>`<div class="ss" style="width:${s.p}%;background:${s.c}">${s.l}</div>`).join('')}</div><span style="font-size:11px;color:var(--color-text-secondary);width:70px;text-align:right;flex-shrink:0">₹${Math.round(d.ls).toLocaleString()}</span></div>`;
+  }
+  document.getElementById('SB').innerHTML=mkBar('Day 0–12h')+mkBar('Night 12–24h')+
+    `<div style="display:flex;gap:10px;margin-top:6px">
+      ${[[OC,'Owner'],[PC,'Permanent'],[TC,'Temporary']].map(([c,l])=>`<span style="font-size:10px;color:var(--color-text-secondary);display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:${c};border-radius:2px;display:inline-block"></span>${l}</span>`).join('')}
+    </div>`;
+  drawTC();
+  document.getElementById('SI').innerHTML=`Daily labour: ₹${Math.round(d.ls*2).toLocaleString()} | Cars/day: <b>${d.cpd}</b> | Revenue/day: ₹${(d.cpd*d.rev).toLocaleString()} | Indicative surplus/day: <b>₹${Math.round(d.contribution*d.cpd).toLocaleString()}</b>`;
+}
+
+function drawTC(){
+  const cv=document.getElementById('TC');if(!cv)return;
+  szC('TC');
+  const W=cv.width||560,H=cv.height;
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,W,H);
+  const dk=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const tc=dk?'rgba(255,255,255,0.68)':'rgba(0,0,0,0.65)';
+  const tc2=dk?'rgba(255,255,255,0.4)':'rgba(0,0,0,0.4)';
+  const gc=dk?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.055)';
+  const pL=44,pR=16,pT=20,pB=42,cW=W-pL-pR,cH=H-pT-pB;
+
+  const rawSeries=[{p:1,t:0,col:'#B4B2A9'},{p:2,t:0,col:'#3B8BD4'},{p:S.perm,t:S.temp,col:'#D85A30'}];
+  const seen=new Set();
+  const series=rawSeries.reduce((acc,s)=>{
+    const k=`${s.p}-${s.t}`;
+    if(seen.has(k)){const ex=acc.find(x=>x.p===s.p&&x.t===s.t);if(ex){ex.isCurr=true;ex.col='#D85A30';ex.lbl=`${s.p}P+${s.t}T (curr)`;}return acc;}
+    seen.add(k);s.isCurr=s.p===S.perm&&s.t===S.temp;
+    s.lbl=s.isCurr?`${s.p}P+${s.t}T (curr)`:s.p===1?'1 perm':'2 perm';
+    acc.push(s);return acc;
+  },[]);
+
+  const NC=[1,2,3,4,5];
+  const allV=series.flatMap(s=>NC.map(nc=>cps(s.p,s.t,S.coat,nc)));
+  const maxV=Math.max(...allV,1);
+
+  ctx.strokeStyle=dk?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.14)';ctx.lineWidth=0.8;
+  ctx.beginPath();ctx.moveTo(pL,pT);ctx.lineTo(pL,pT+cH);ctx.lineTo(pL+cW,pT+cH);ctx.stroke();
+
+  for(let i=0;i<=4;i++){
+    const y=pT+cH*(1-i/4),v=Math.round(maxV*i/4);
+    ctx.strokeStyle=gc;ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(pL+cW,y);ctx.stroke();
+    ctx.fillStyle=tc2;ctx.font='10px var(--font-sans)';ctx.textAlign='right';ctx.fillText(v,pL-4,y+3.5);
+  }
+  ctx.save();ctx.translate(13,pT+cH/2);ctx.rotate(-Math.PI/2);
+  ctx.fillStyle=tc2;ctx.font='10px var(--font-sans)';ctx.textAlign='center';ctx.fillText('Cars / shift',0,0);ctx.restore();
+  ctx.fillStyle=tc2;ctx.font='10px var(--font-sans)';ctx.textAlign='center';ctx.fillText('Cars arriving simultaneously',pL+cW/2,H-4);
+
+  const ns=series.length,gW=cW/NC.length,bw=(gW*0.72)/ns,gPad=(gW-gW*0.72)/2;
+  NC.forEach((nc,ci)=>{
+    series.forEach((s,si)=>{
+      const v=cps(s.p,s.t,S.coat,nc),bh=v>0?Math.max(3,Math.round(v/maxV*cH)):0;
+      const bx=pL+ci*gW+gPad+si*bw,by=pT+cH-bh;
+      ctx.globalAlpha=s.isCurr?1:0.45;ctx.fillStyle=s.col;ctx.fillRect(bx+0.5,by,bw-2,bh);ctx.globalAlpha=1;
+      if(s.isCurr&&nc===S.cars){
+        ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=1.5;ctx.strokeRect(bx+0.5,by,bw-2,bh);
+        ctx.fillStyle=s.col;ctx.font='bold 11px var(--font-sans)';ctx.textAlign='center';ctx.fillText(v,bx+bw/2-1,by-5);
+      }else if(s.isCurr){
+        ctx.fillStyle=tc2;ctx.font='10px var(--font-sans)';ctx.textAlign='center';ctx.fillText(v,bx+bw/2-1,by-3);
+      }
+    });
+    const lx=pL+ci*gW+gW/2;
+    ctx.fillStyle=S.cars===nc?tc:tc2;ctx.font=S.cars===nc?'bold 11px var(--font-sans)':'11px var(--font-sans)';
+    ctx.textAlign='center';ctx.fillText(nc+(nc===1?' car':' cars'),lx,pT+cH+14);
+    if(nc===S.cars){ctx.fillStyle=tc2;ctx.font='9px var(--font-sans)';ctx.fillText('▲',lx,pT+cH+26);}
+  });
+
+  const legW=series.length*110;let lx0=pL+cW-legW;
+  series.forEach((s,i)=>{
+    const lx=lx0+i*110;ctx.globalAlpha=s.isCurr?1:0.55;ctx.fillStyle=s.col;ctx.fillRect(lx,pT+2,10,10);ctx.globalAlpha=1;
+    ctx.fillStyle=tc2;ctx.font='10px var(--font-sans)';ctx.textAlign='left';ctx.fillText(s.lbl,lx+13,pT+10);
+  });
+}
+
+// ── PROCESS FLOW ──────────────────────────────
+function rPR(d){
+  const GC={A:'#3B8BD4',B:'#3B8BD4',C:'#BA7517',D:'#7F77DD',E:'#1D9E75'};
+  const GN={A:'A — Car Entry (Wet Bay · fixed)',B:'B — Car Washing (Wet Bay · fixed)',
+            C:'C — Paint Correction (Dry Bay · variable)',D:'D — Ceramic Coating (Dry Bay · variable)',
+            E:'E — Interior (Extra Bay · variable)'};
+  const maxT=200;let h='';
+  ['A','B','C','D','E'].forEach(g=>{
+    h+=`<div class="sh">${GN[g]}</div>`;
+    PROCS.filter(p=>p.g===g).forEach(p=>{
+      const b=p.coat?p.t*S.coat:p.t, e=p.v?Math.ceil(b/d.w):b;
+      const pct=Math.min(100,Math.round(e/maxT*100));
+      const xl=p.v?` (${d.w}W/slot→${e}m)`:'';
+      h+=`<div class="pr"><span class="pn2" title="${p.n}">${p.n}</span>
+          <div class="pt"><div class="pf" style="width:${pct}%;background:${GC[g]}">${e}m${xl}</div></div>
+          <span class="pp">${b}m</span></div>`;
+    });
+  });
+  h+=`<div class="ib">FT=${d.ft}m (sum of all steps plus modelled queue wait) | CT=${d.ct}m (bottleneck rate) | ${d.w}W/slot on variable steps | Wet Bay=fixed 110m | Formula: wpc=min(2,⌊${d.tw}÷${activeDrySlots(S.perm,S.temp,S.cars)}⌋)=${d.w}</div>`;
+  document.getElementById('PC').innerHTML=h;
+}
+
+// ── SCENARIO TABLE ────────────────────────────
+function rSC(d){
+  let h='';
+  for(let nc=1;nc<=5;nc++){
+    for(let p=1;p<=6;p++){
+      for(let t=0;t<=6;t++){
+        const cto=calcCT(p,t,S.coat,nc),ft=calcFT(p,t,S.coat,nc);
+        const cs2=cps(p,t,S.coat,nc),ls=lshift(p,t),lcpc=cs2>0?ls/cs2:ls;
+        const rev=REV[S.coat],contribution=rev*(1-REVENUE_ALLOWANCE_RATE)-lcpc;
+        const cur=nc===S.cars&&p===S.perm&&t===S.temp;
+        const slots=activeDrySlots(p,t,nc);
+        const badge=contribution>10000?'<span class="bg2 gg">Strong estimate</span>':contribution>0?'<span class="bg2 gw">Positive estimate</span>':'<span class="bg2 gr">Negative estimate</span>';
+        const bnCol=cto.bottleneck==='Wet Bay'?'#E24B4A':cto.bottleneck==='Dry Bay'?'#BA7517':'#1D9E75';
+        h+=`<tr style="${cur?'background:var(--color-background-info);':''}">
+          <td>${nc}</td><td>${p}</td><td>${t}</td>
+          <td><span style="font-size:10px">min(2,⌊${p+t}÷${slots}⌋)=<b>${cto.w}</b></span></td>
+          <td style="font-weight:500;color:var(--color-text-danger)">${cto.ct}</td>
+          <td style="color:var(--color-text-info)">${ft}</td>
+          <td><span style="font-size:10px;font-weight:500;color:${bnCol}">${cto.bottleneck}</span></td>
+          <td>${cs2}</td><td>${cs2*2}</td>
+          <td>₹${Math.round(lcpc).toLocaleString()}</td>
+          <td>₹${rev.toLocaleString()}</td>
+          <td style="font-weight:500;color:${contribution>0?'var(--color-text-success)':'var(--color-text-danger)'}">₹${Math.round(contribution).toLocaleString()}</td>
+          <td>${badge}</td></tr>`;
+      }
+    }
+  }
+  document.getElementById('STB').innerHTML=h;
+  document.getElementById('SNI').innerHTML=`W/Slot column shows the full formula. Highlighted row = current settings. <b>3 cars + 4W: wpc=min(2,⌊4÷2⌋)=2 → CT=110m ✓</b>`;
+}
+
+window.addEventListener('load',()=>{
+  go();
+  window.addEventListener('resize',()=>{
+    if(atab==='shift'){szC('TC');drawTC();}
+    else if(atab==='ct'){szC('CTC');go();}
+    else if(atab==='floor')go();
+  });
+});
+</script>
