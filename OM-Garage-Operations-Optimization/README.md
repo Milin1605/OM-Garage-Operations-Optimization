@@ -2,10 +2,6 @@
 
 An interactive, browser-based simulation of an automotive detailing and ceramic-coating garage. The project explores how staffing, parallel workstations, process times and coating packages affect cycle time, flow time and indicative financial contribution.
 
-## Live demo
-Enable GitHub Pages after publishing this repository. The URL will be:
-`https://YOUR-GITHUB-USERNAME.github.io/OM-Garage-Operations-Optimization/`
-
 ## Run locally
 No installation or build step is required. Download or clone the repository and open `index.html` in a modern browser.
 
